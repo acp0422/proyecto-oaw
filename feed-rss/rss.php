@@ -90,7 +90,7 @@ function saveNewsToCsv($newsList, $csvFile = null){
 
 function readNewsFromCsv(): array {
 
-    $csvFile = $csvFile ?? (__DIR__ . "/news.csv");
+    $csvFile = __DIR__ . "/news.csv";
     if (!file_exists($csvFile)) {
         return [];
     }
@@ -119,6 +119,86 @@ function readNewsFromCsv(): array {
     return $rows;
 }
 
+// Busca noticias que coincidan con un texto en el título o la descripción
+function searchNews($noticias, $textoBusqueda) {
+    if (empty($textoBusqueda)) {
+        return $noticias;
+    }
+    
+    $resultado = [];
+    $textoBusqueda = strtolower(trim($textoBusqueda));
+    
+    foreach ($noticias as $noticia) {
+        $titulo = strtolower($noticia['title']);
+        $descripcion = strtolower($noticia['description']);
+        
+        if (strpos($titulo, $textoBusqueda) !== false || 
+            strpos($descripcion, $textoBusqueda) !== false) {
+            $resultado[] = $noticia;
+        }
+    }
+    
+    return $resultado;
+}
+
+// Busca noticias que tengan una categoría específica
+function filterByCategory($noticias, $categoria) {
+    if (empty($categoria)) {
+        return $noticias;
+    }
+    
+    $resultado = [];
+    $categoria = strtolower(trim($categoria));
+    
+    foreach ($noticias as $noticia) {
+        foreach ($noticia['categories'] as $cat) {
+            if (strpos(strtolower($cat), $categoria) !== false) {
+                $resultado[] = $noticia;
+                break;
+            }
+        }
+    }
+    
+    return $resultado;
+}
+
+// Ordena las noticias según campo y dirección
+function sortNews($noticias, $campo, $direccion = 'ASC') {
+    if (empty($noticias)) {
+        return $noticias;
+    }
+    
+    $camposPermitidos = ['date', 'title', 'url', 'description', 'categories'];
+    if (!in_array($campo, $camposPermitidos)) {
+        $campo = 'date'; //Fecha por defecto
+    }
+    
+    usort($noticias, function($a, $b) use ($campo, $direccion) {
+
+        if ($campo === 'date') {
+            $timeA = strtotime($a[$campo]);
+            $timeB = strtotime($b[$campo]);
+            $comparacion = $timeA - $timeB;
+        } 
+
+        elseif ($campo === 'categories') {
+            $catA = !empty($a['categories']) ? strtolower($a['categories'][0]) : '';
+            $catB = !empty($b['categories']) ? strtolower($b['categories'][0]) : '';
+            $comparacion = strcmp($catA, $catB);
+        }
+
+        else {
+            $valorA = strtolower($a[$campo] ?? '');
+            $valorB = strtolower($b[$campo] ?? '');
+            $comparacion = strcmp($valorA, $valorB);
+        }
+        
+        return ($direccion === 'DESC') ? -$comparacion : $comparacion;
+    });
+    
+    return $noticias;
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (!isset($_POST["feedUrl"]) || trim($_POST["feedUrl"]) === "") {
         http_response_code(400);
@@ -130,9 +210,43 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     exit;
 }
 
+//GET V2
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    
     $news = readNewsFromCsv();
-    echo json_encode(["status" => "success", "news" => $news]);
+    
+    if (isset($_GET["buscar"]) && !empty(trim($_GET["buscar"]))) {
+        $news = searchNews($news, $_GET["buscar"]);
+    }
+    
+    if (isset($_GET["categoria"]) && !empty(trim($_GET["categoria"]))) {
+        $news = filterByCategory($news, $_GET["categoria"]);
+    }
+    
+    $camposValidos = ['date', 'title', 'url', 'description', 'categories'];
+    $campoOrden = isset($_GET["ordenar"]) && in_array($_GET["ordenar"], $camposValidos) 
+                  ? $_GET["ordenar"] 
+                  : 'date'; // Por defecto fecha
+    
+    $direccion = isset($_GET["dir"]) && strtoupper($_GET["dir"]) === 'DESC' 
+                 ? 'DESC' 
+                 : 'ASC'; // Por defecto ascendente
+    
+    $news = sortNews($news, $campoOrden, $direccion);
+    
+    echo json_encode([
+        "status" => "success", 
+        "news" => $news,
+        "total" => count($news),
+        "filtros" => [
+            "buscar" => $_GET["buscar"] ?? null,
+            "categoria" => $_GET["categoria"] ?? null
+        ],
+        "ordenamiento" => [
+            "campo" => $campoOrden,
+            "direccion" => $direccion
+        ]
+    ]);
     exit;
 }
 
