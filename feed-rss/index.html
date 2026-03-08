@@ -6,6 +6,7 @@
   <title>Feed RSS</title>
 </head>
 <body>
+  
   <div class="feed-rss">
     <h1>Feed RSS Panel</h1>
     <p> Enter the RSS feed URL:</p>
@@ -16,12 +17,63 @@
     <p>Update news</p>
     <button onclick="newsUpdate()">Update News</button>
   </div>
+
+ <div class="filters-section">
+    <h3>Filter & Sort News</h3>
+    
+    <!-- Búsqueda por texto -->
+    <div>
+      <label for="searchInput">Search:</label>
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Search in title/description..."
+        onkeyup="applyFilters()"
+      >
+    </div>
+    
+    <!-- Filtro por categoría -->
+    <div>
+      <label for="categoryFilter">Category:</label>
+      <input 
+        type="text" 
+        id="categoryFilter" 
+        placeholder="Filter by category..."
+        onkeyup="applyFilters()"
+      >
+    </div>
+    
+    <!-- Ordenamiento -->
+    <div>
+      <label for="sortBy">Sort by:</label>
+      <select id="sortBy" onchange="applyFilters()">
+        <option value="date">Date</option>
+        <option value="title">Title</option>
+        <option value="url">URL</option>
+        <option value="description">Description</option>
+        <option value="categories">Category</option>
+      </select>
+      
+      <select id="sortDir" onchange="applyFilters()">
+        <option value="DESC">Descending</option>
+        <option value="ASC">Ascending</option>
+      </select>
+    </div>
+    
+    <!-- Botón para limpiar -->
+    <div>
+      <button onclick="clearFilters()">Clear Filters</button>
+    </div>
+  </div>
+  
   <div id="news-container">
     <h1>News</h1>
   </div>
+  
 <script src="update.js"></script>
 </body>
 </html>
+
 <style>
 
   body{
