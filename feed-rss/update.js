@@ -11,7 +11,7 @@ async function newsUpdate(filters = {}) {
   try {
     console.log("Loading news (GET) ...");
 
-    let url = "/tareas_web/feedRSS/rss.php";
+    let url = "/tareas_web/feedRSS/rss.php"; //IMPORTANTE: Cambiar esto según la PC 1/2
     const params = new URLSearchParams();
     
     if (filters.buscar) params.append('buscar', filters.buscar);
@@ -53,7 +53,7 @@ async function postUpdateNews(event){
 
   const rssUrl = document.querySelector("input[name='rssUrl']").value;
 
-  const res = await fetch("/tareas_web/feedRSS/rss.php", {
+  const res = await fetch("/tareas_web/feedRSS/rss.php", { //IMPORTANTE: Cambiar esto según la PC 1/2
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
