@@ -10,7 +10,7 @@
   
   <div class="feed-rss">
     <h1>Feed RSS Panel</h1>
-    <p> Enter the RSS feed URL:</p>
+    <p>Enter the RSS feed URL:</p>
     <form onsubmit="postUpdateNews(event)">
       <input type="text" name="rssUrl" placeholder="Enter RSS feed URL" required>
       <button type="submit">Submit</button>
@@ -19,51 +19,62 @@
     <button onclick="newsUpdate()">Update News</button>
   </div>
 
- <div class="filters-section">
-    <h3>Filter & Sort News</h3>
-    
-    <!-- Búsqueda por texto -->
-    <div>
-      <label for="searchInput">Search:</label>
-      <input 
-        type="text" 
-        id="searchInput" 
-        placeholder="Search in title/description..."
-        onkeyup="applyFilters()"
-      >
+  <!-- FILTROS DESPLEGABLES -->
+  <div class="filters-wrapper">
+    <div class="filters-header" onclick="toggleFilters()">
+      <h3>Search & Filter News</h3>
+      <span class="toggle-icon" id="toggleIcon">▼</span>
     </div>
     
-    <!-- Filtro por categoría -->
-    <div>
-      <label for="categoryFilter">Category:</label>
-      <input 
-        type="text" 
-        id="categoryFilter" 
-        placeholder="Filter by category..."
-        onkeyup="applyFilters()"
-      >
-    </div>
-    
-    <!-- Ordenamiento -->
-    <div>
-      <label for="sortBy">Sort by:</label>
-      <select id="sortBy" onchange="applyFilters()">
-        <option value="date">Date</option>
-        <option value="title">Title</option>
-        <option value="url">URL</option>
-        <option value="description">Description</option>
-        <option value="categories">Category</option>
-      </select>
-      
-      <select id="sortDir" onchange="applyFilters()">
-        <option value="DESC">Descending</option>
-        <option value="ASC">Ascending</option>
-      </select>
-    </div>
-    
-    <!-- Botón para limpiar -->
-    <div>
-      <button onclick="clearFilters()">Clear Filters</button>
+    <div class="filters-content" id="filtersContent">
+      <div class="filters-grid">
+        <!-- Búsqueda por texto -->
+        <div class="filter-item">
+          <label for="searchInput">Search:</label>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search in title/description..."
+            onkeyup="applyFilters()"
+          >
+        </div>
+        
+        <!-- Filtro por categoría -->
+        <div class="filter-item">
+          <label for="categoryFilter">Category:</label>
+          <input 
+            type="text" 
+            id="categoryFilter" 
+            placeholder="Filter by category..."
+            onkeyup="applyFilters()"
+          >
+        </div>
+        
+        <!-- Ordenamiento -->
+        <div class="filter-item">
+          <label for="sortBy">Sort by:</label>
+          <select id="sortBy" onchange="applyFilters()">
+            <option value="date">Date</option>
+            <option value="title">Title</option>
+            <option value="url">URL</option>
+            <option value="description">Description</option>
+            <option value="categories">Category</option>
+          </select>
+        </div>
+        
+        <div class="filter-item">
+          <label for="sortDir">Direction:</label>
+          <select id="sortDir" onchange="applyFilters()">
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending</option>
+          </select>
+        </div>
+        
+        <!-- Botón para limpiar -->
+        <div class="clear-filters-btn">
+          <button onclick="clearFilters()">Clear All Filters</button>
+        </div>
+      </div>
     </div>
   </div>
   
@@ -71,8 +82,9 @@
     <h1>News</h1>
   </div>
   
-<script src="update.js"></script>
-<!-- Función para toggle de filtros -->
+  <script src="update.js"></script>
+
+  <!-- Función para toggle de filtros -->
   <script>
     function toggleFilters() {
       const content = document.getElementById('filtersContent');
@@ -97,88 +109,3 @@
   https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada
   https://e00-elmundo.uecdn.es/elmundo/rss/portada.xml
 -->
-
-<style>
-
-  body{
-    margin:0;
-    font-family: Arial, Helvetica, sans-serif;
-    display:flex;
-    height:100vh;
-  }
-
-  .feed-rss{
-    width:30%;
-    background:#f4f4f4;
-    padding:20px;
-    border-right:1px solid #ddd;
-    box-sizing:border-box;
-  }
-
-  input{
-    width:100%;
-    padding:8px;
-    margin:10px 0;
-    box-sizing:border-box;
-  }
-
-  button{
-    padding:8px;
-    width: 100%;
-    cursor:pointer;
-    background-color: #0ba6ff;
-  }
-
-  #news-container{
-  width:70%;
-  padding:20px;
-  overflow-y:auto;
-  box-sizing:border-box;
-  background:#fafafa;
-}
-
-.news-item{
-  background:white;
-  border:1px solid #e0e0e0;
-  border-radius:8px;
-  padding:15px;
-  margin-bottom:15px;
-  box-shadow:0 2px 5px rgba(0,0,0,0.05);
-  transition:transform 0.2s, box-shadow 0.2s;
-}
-
-.news-item:hover{
-  transform:translateY(-3px);
-  box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.news-item h3{
-  margin:0 0 10px 0;
-  font-size:18px;
-  color:#333;
-}
-
-.news-item p{
-  margin:5px 0;
-  color:#555;
-  font-size:14px;
-}
-
-.news-date{
-  font-size:12px;
-  color:#888;
-}
-
-.news-item a{
-  display:inline-block;
-  margin-top:8px;
-  color:#1a73e8;
-  text-decoration:none;
-  font-weight:bold;
-}
-
-.news-item a:hover{
-  text-decoration:underline;
-}
-
-</style>
