@@ -19,7 +19,7 @@
     <button onclick="newsUpdate()">Update News</button>
   </div>
 
-  <!-- FILTROS DESPLEGABLES -->
+  <!-- Filtro desplegable -->
   <div class="filters-wrapper">
     <div class="filters-header" onclick="toggleFilters()">
       <h3>Search & Filter News</h3>
@@ -83,24 +83,6 @@
   </div>
   
   <script src="update.js"></script>
-
-  <!-- Función para toggle de filtros -->
-  <script>
-    function toggleFilters() {
-      const content = document.getElementById('filtersContent');
-      const header = document.querySelector('.filters-header');
-      const icon = document.getElementById('toggleIcon');
-      
-      content.classList.toggle('show');
-      header.classList.toggle('active');
-      
-      if (content.classList.contains('show')) {
-        icon.textContent = '▲';
-      } else {
-        icon.textContent = '▼';
-      }
-    }
-  </script>
 </body>
 </html>
 
