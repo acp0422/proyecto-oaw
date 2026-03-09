@@ -11,7 +11,7 @@ async function newsUpdate(filters = {}) {
   try {
     console.log("Loading news (GET) ...");
 
-    let url = "/tareas_web/feedRSS/rss.php"; //IMPORTANTE: Cambiar esto según la PC 1/2
+    let url = "rss.php";
     const params = new URLSearchParams();
     
     if (filters.buscar) params.append('buscar', filters.buscar);
@@ -48,12 +48,10 @@ async function newsUpdate(filters = {}) {
 }
 
 async function postUpdateNews(event){
-
   event.preventDefault();
-
   const rssUrl = document.querySelector("input[name='rssUrl']").value;
 
-  const res = await fetch("/tareas_web/feedRSS/rss.php", { //IMPORTANTE: Cambiar esto según la PC 1/2
+  const res = await fetch("rss.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
@@ -62,40 +60,28 @@ async function postUpdateNews(event){
   });
 
   const data = await res.json();
-
   console.log(data);
-
   alert(data.message);
-
 }
 
 function showNews(newsList) {
-
   const container = document.getElementById("news-container");
-
   container.innerHTML = "<h1>News</h1>";
 
   newsList.forEach(news => {
-
     const div = document.createElement("div");
-
     div.classList.add("news-item");
-
     div.innerHTML = `
       <h3>${news.title}</h3>
       <p><strong>Description:</strong> ${news.description}</p>
       <p class="news-date"><strong>Date:</strong> ${news.date}</p>
       <p class="news-category"><strong>Category:</strong> ${news.category}</p>
-      <a href="${news.url}" target="_blank">read more</a>
+      <a href="${news.url}" target="_blank">Read more here!</a>
     `;
-
     container.appendChild(div);
-
   });
-
 }
 
-// Función para aplicar filtros desde el HTML
 function applyFilters() {
   currentFilters = {
     buscar: document.getElementById("searchInput")?.value || '',
@@ -103,13 +89,10 @@ function applyFilters() {
     ordenar: document.getElementById("sortBy")?.value || 'date',
     direccion: document.getElementById("sortDir")?.value || 'DESC'
   };
-  
   newsUpdate(currentFilters);
 }
 
-// Función para limpiar filtros
 function clearFilters() {
-  
   if (document.getElementById("searchInput")) 
     document.getElementById("searchInput").value = '';
   if (document.getElementById("categoryFilter")) 
@@ -120,6 +103,22 @@ function clearFilters() {
     document.getElementById("sortDir").value = 'DESC';
   
   newsUpdate({});
+}
+
+// Función para toggle de filtros (Movida desde el HTML)
+function toggleFilters() {
+  const content = document.getElementById('filtersContent');
+  const header = document.querySelector('.filters-header');
+  const icon = document.getElementById('toggleIcon');
+  
+  content.classList.toggle('show');
+  header.classList.toggle('active');
+  
+  if (content.classList.contains('show')) {
+    icon.textContent = '▲';
+  } else {
+    icon.textContent = '▼';
+  }
 }
 
 // Cargar noticias al inicio
