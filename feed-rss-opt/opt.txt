@@ -1,0 +1,133 @@
+OPTIMIZACIONES DEL CLIENTE - RSS READER
+
+========================
+HTML
+========================
+
+1. Carga no bloqueante de JavaScript
+Se agregó el atributo defer al script:
+<script src="update.js" defer></script>
+
+Esto permite que el HTML se renderice primero sin bloquear la carga.
+
+------------------------
+
+2. Eliminación de eventos inline
+Se eliminaron atributos como:
+- onclick
+- onsubmit
+- onkeyup
+- onchange
+
+Ahora los eventos se manejan desde JavaScript usando addEventListener.
+
+------------------------
+
+3. Uso de label + id
+Se mejoró la accesibilidad usando label correctamente:
+
+<label for="rssUrl">Enter the RSS feed URL:</label>
+<input type="url" id="rssUrl" name="rssUrl">
+
+------------------------
+
+4. Tipos de input optimizados
+Se cambió:
+type="text"
+
+por:
+type="url"
+
+para mejor validación y experiencia de usuario.
+
+------------------------
+
+5. Botones correctamente definidos
+Se agregó:
+type="button"
+
+para evitar envíos accidentales de formularios.
+
+========================
+CSS
+========================
+
+1. Uso de archivo externo
+El CSS se movió a styles.css.
+
+Beneficios:
+- Permite cache del navegador
+- Mejora organización del código
+
+------------------------
+
+2. Selectores simples
+Se utilizaron selectores simples como:
+.news-item p
+
+Esto reduce el costo de renderizado.
+
+------------------------
+
+3. Eliminación de reglas innecesarias
+Se eliminaron estilos duplicados o no utilizados.
+
+------------------------
+
+4. Preparación para minificación
+El CSS quedó listo para compresión:
+- eliminación de espacios
+- reducción de tamaño
+
+========================
+JAVASCRIPT
+========================
+
+1. Uso de addEventListener
+Se reemplazaron eventos inline por:
+
+document.getElementById("rssForm")
+  .addEventListener("submit", postUpdateNews);
+
+------------------------
+
+2. Uso de DOMContentLoaded
+document.addEventListener('DOMContentLoaded', function() {
+  ...
+});
+
+Garantiza que el DOM esté cargado antes de ejecutar scripts.
+
+------------------------
+
+3. Uso de defer (desde HTML)
+Permite ejecutar el JS sin bloquear el render inicial.
+
+------------------------
+
+4. Optimización del DOM
+Se redujo la manipulación excesiva del DOM en funciones como showNews.
+
+------------------------
+
+5. Limpieza de código
+Se eliminaron:
+- console.log innecesarios
+- código redundante
+
+------------------------
+
+6. Uso de fetch optimizado
+Se implementó:
+- async/await
+- manejo de errores con try/catch
+
+========================
+RESULTADO
+========================
+
+- Mejor rendimiento de carga
+- Menor bloqueo del navegador
+- Mejor puntuación en Lighthouse
+- Código más limpio y mantenible
+- Separación clara entre HTML, CSS y JS
