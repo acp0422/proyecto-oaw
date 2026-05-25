@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed RSS</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="feed-rss">
+      <h1>Feed RSS Panel</h1>
+      <form id="rssForm">
+        <label for="rssUrl">Enter the RSS feed URL:</label>
+        <input type="url" id="rssUrl" name="rssUrl" placeholder="Enter RSS feed URL" required />
+        <button type="submit">Submit</button>
+      </form>
+      <p>Update news</p>
+      <button id="updateNewsBtn" type="button">Update News</button>
+    </div>
+
+    <div class="filters-wrapper">
+      <div class="filters-header" id="filtersToggleBtn">
+        <h3>Search & Filter News</h3>
+        <span class="toggle-icon" id="toggleIcon">▼</span>
+      </div>
+      <div class="filters-content" id="filtersContent">
+        <div class="filters-grid">
+          <div class="filter-item">
+            <label for="searchInput">Search:</label>
+            <input type="text" id="searchInput" placeholder="Search in title/description..." />
+          </div>
+          <div class="filter-item">
+            <label for="categoryFilter">Category:</label>
+            <input type="text" id="categoryFilter" placeholder="Filter by category..." />
+          </div>
+          <div class="filter-item">
+            <label for="sortBy">Sort by:</label>
+            <select id="sortBy">
+              <option value="date">Date</option>
+              <option value="title">Title</option>
+              <option value="url">URL</option>
+              <option value="description">Description</option>
+              <option value="categories">Category</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label for="sortDir">Direction:</label>
+            <select id="sortDir">
+              <option value="ASC">Ascending</option>
+              <option value="DESC">Descending</option>
+            </select>
+          </div>
+          <div class="clear-filters-btn">
+            <button id="clearFiltersBtn" type="button">Clear All Filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="news-container">
+      <h1>News</h1>
+    </div>
+
+    <script src="update.js" defer></script>
+  </body>
+</html>
